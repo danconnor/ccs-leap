@@ -25,7 +25,7 @@
                 background-size: cover; 
         }
 
-        #bgvid, #bgvid2, #bgvid3 { 
+        #bgvid, #bgvid2, #bgvid3, #bgvid4 { 
           display: none;
           background: url(assets/images/blank-intro.png) no-repeat;
         }
@@ -51,6 +51,13 @@
           background: url(assets/images/narrative-3.png) no-repeat;
         }
 
+
+        #narratives-intro-3 button {
+          position: absolute;
+          left: 1100px;
+          top: 500px;
+          padding: 100px;
+        }
 
         #dev { 
           position: absolute;
@@ -152,12 +159,16 @@
       <button type="button" onclick="gotoVideoFour()" class="btn-primary leap-click leap-interactive" leap-attractor-x-padding="30" leap-attractor-y-padding="30" leap-click-delay="1000">Continue</button>
     </div>
 
-    <video playsinline  poster="assets/images/blank-intro.png" id="bgvid2" class="fullness closeable">
+    <video playsinline poster="assets/images/blank-intro.png" id="bgvid2" class="fullness closeable">
       <source src="assets/video/video_2.mp4" type="video/mp4">
     </video>
 
-    <video playsinline  poster="assets/images/blank-intro.png" id="bgvid3" class="fullness closeable">
+    <video playsinline poster="assets/images/blank-intro.png" id="bgvid3" class="fullness closeable">
       <source src="assets/video/video_3.mp4" type="video/mp4">
+    </video> 
+
+    <video playsinline poster="assets/images/blank-intro.png" id="bgvid4" class="fullness closeable">
+      <source src="assets/video/video_4.mp4" type="video/mp4">
     </video> 
 
     <div id="dev" onclick="moveAlong()"><p>>></p></div>
@@ -173,6 +184,12 @@
         }else if (whatStageAreWeAt==2){
           whatStageAreWeAt++;
           vidTwoHandler();
+        }else if (whatStageAreWeAt==3){
+          whatStageAreWeAt++;
+          vidThreeHandler();
+        }else if (whatStageAreWeAt==4){
+          whatStageAreWeAt++;
+          vidFourHandler();
         }
       }
 
@@ -195,6 +212,7 @@
       var theIntroVid = document.getElementById('bgvid');
       var theSecondVid = document.getElementById('bgvid2');
       var theThirdVid = document.getElementById('bgvid3');
+      var theFourthVid = document.getElementById('bgvid4');
 
       // init
       theIntroVid.style.display="block";
@@ -219,6 +237,11 @@
           document.getElementById('narratives-intro-3').style.display="block";
       }
 
+      function vidFourHandler(e) {
+          theFourthVid.style.display="none";
+          theFourthVid.pause(); 
+          document.getElementById('narratives-intro-4').style.display="block";
+      }
 
       function gotoVideoTwo(){
         closeables = document.getElementsByClassName('closeable');
@@ -238,7 +261,18 @@
         theThirdVid.style.display="block";
         theThirdVid.play(); 
         theThirdVid.addEventListener('ended',vidThreeHandler,false);
-      }      
+      }   
+
+      function gotoVideoFour(){
+        closeables = document.getElementsByClassName('closeable');
+        for(i=0; i<closeables.length; i++){
+          closeables[i].style.display="none";
+        }
+        theFourthVid.style.display="block";
+        theFourthVid.play(); 
+        theFourthVid.addEventListener('ended',vidFourHandler,false);
+      }  
+
 
     </script>
   </body>
