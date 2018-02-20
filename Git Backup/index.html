@@ -1,0 +1,245 @@
+<html>
+  <head>
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href="css/leapstrap.css" rel="stylesheet" media="screen">
+
+    <style>
+        body {
+          font-family:sans-serif;
+        }
+
+        .fullness {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                -ms-transform: translateX(-50%) translateY(-50%);
+                -moz-transform: translateX(-50%) translateY(-50%);
+                -webkit-transform: translateX(-50%) translateY(-50%);
+                transform: translateX(-50%) translateY(-50%);
+                background-size: cover; 
+        }
+
+        #bgvid, #bgvid2, #bgvid3 { 
+          display: none;
+          background: url(assets/images/blank-intro.png) no-repeat;
+        }
+
+        #narratives-intro {
+          display: none;
+        }
+
+        #narratives-intro-2 {
+          display: none;
+          background: url(assets/images/post-intro.png) no-repeat;
+        }
+
+        #narratives-intro-2 button {
+          position: absolute;
+          left: 1100px;
+          top: 500px;
+          padding: 100px;
+        }
+
+        #narratives-intro-3 {
+          display: none;
+          background: url(assets/images/narrative-3.png) no-repeat;
+        }
+
+
+        #dev { 
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          background-color: #000;
+          color: green;
+          font-size: 16px;
+          line-height: 100%;
+          cursor: pointer;
+          padding: 10px;
+        }
+
+        #hotspot1 {
+          margin: 112px 0 0 882px;
+          width: 642px;
+          height: 900px;
+        }
+
+        #hotspot1 a:link {
+          background-color:green;
+          transition-duration: 1s;
+          width: 100%;
+          height: 100vh;
+          display: block;
+          opacity: 0.2;
+        }
+
+
+        #hotspot1 a:hover {
+          opacity: 0.5
+        }
+
+        .test-a {
+          background-color:#000;
+          color: green;
+          padding: 10px;
+          position: absolute;
+          left: 200px;
+          top: 200px;
+        }
+
+        .test-a:hover, .test-a.hover {
+          background-color:#fff;
+          color: orange;
+        }
+
+        .introPane {
+          width: 33%;
+          height: 100vh;
+          display: inline-block;
+          margin: 0;
+          position: relative;
+          text-align: center;
+        }
+
+        .introPane button {
+          position: absolute;
+          bottom: 40px;
+          padding: 50px 100px;
+          left: 50%;
+          -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+        }
+
+        #pane1 { background-image: url(assets/images/menu1.png); }
+        #pane2 { background-image: url(assets/images/menu2.png); }
+        #pane3 { background-image: url(assets/images/menu3.png); } 
+
+    </style>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/leap.js"></script>
+    <script src="js/leapstrap.js"></script>
+  </head>
+  <body>
+
+    <video playsinline autoplay poster="assets/images/blank-intro.png" id="bgvid" class="fullness closeable">
+      <source src="assets/video/intro_V2.mp4" type="video/mp4">
+    </video>
+
+    <div id="narratives-intro" class="fullness">
+      <div class="introPane" id="pane1">
+        <button type="button" onclick="gotoVideoTwo()" class="btn-primary leap-click leap-interactive" leap-attractor-x-padding="30" leap-attractor-y-padding="30" leap-click-delay="1000">Choice #1</button>
+      </div>
+      <div class="introPane" id="pane2">        
+        <button type="button" onclick="gotoVideoTwo()" class="btn-primary leap-click leap-interactive" leap-attractor-x-padding="30" leap-attractor-y-padding="30" leap-click-delay="1000">Choice #2</button>
+      </div>
+      <div class="introPane" id="pane3">
+        <button type="button" onclick="gotoVideoTwo()" class="btn-primary leap-click leap-interactive" leap-attractor-x-padding="30" leap-attractor-y-padding="30" leap-click-delay="1000">Choice #3</button>
+      </div>
+    </div>
+
+    <div id="narratives-intro-2" class="fullness closeable">        
+      <button type="button" onclick="gotoVideoThree()" class="btn-primary leap-click leap-interactive" leap-attractor-x-padding="30" leap-attractor-y-padding="30" leap-click-delay="1000">Continue</button>
+    </div>
+
+     <div id="narratives-intro-3" class="fullness closeable">        
+      <button type="button" onclick="gotoVideoFour()" class="btn-primary leap-click leap-interactive" leap-attractor-x-padding="30" leap-attractor-y-padding="30" leap-click-delay="1000">Continue</button>
+    </div>
+
+    <video playsinline  poster="assets/images/blank-intro.png" id="bgvid2" class="fullness closeable">
+      <source src="assets/video/video_2.mp4" type="video/mp4">
+    </video>
+
+    <video playsinline  poster="assets/images/blank-intro.png" id="bgvid3" class="fullness closeable">
+      <source src="assets/video/video_3.mp4" type="video/mp4">
+    </video> 
+
+    <div id="dev" onclick="moveAlong()"><p>>></p></div>
+    
+    <script>
+
+      var whatStageAreWeAt = 1;
+
+      var moveAlong = function(){
+        if(whatStageAreWeAt==1){
+          whatStageAreWeAt++;
+          vidHandler();
+        }else if (whatStageAreWeAt==2){
+          whatStageAreWeAt++;
+          vidTwoHandler();
+        }
+      }
+
+      LeapManager.init({
+        interactiveSelector: "a",
+        enableMetaGestures: false,
+        enableDefaultMetaGestureActions: false,
+        maxCursors:1,
+        enableHoverTap: true,
+        enablePressDown: false,
+        enableTouchScrolling: false,
+        enableScrollbarScrolling: false,
+        simulateWithMouse:false,
+        mouseCursorConfig: {
+        easing:.2
+        }
+      });
+
+      var devThing = document.getElementById("dev");
+      var theIntroVid = document.getElementById('bgvid');
+      var theSecondVid = document.getElementById('bgvid2');
+      var theThirdVid = document.getElementById('bgvid3');
+
+      // init
+      theIntroVid.style.display="block";
+      theIntroVid.addEventListener('ended',vidHandler,false);
+
+      function vidHandler(e) {
+          theIntroVid.style.display="none";
+          theIntroVid.pause(); 
+          document.getElementById('narratives-intro').style.display="block";
+      }
+
+      function vidTwoHandler(e) {
+          theSecondVid.style.display="none";
+          theSecondVid.pause(); 
+          document.getElementById('narratives-intro-2').style.display="block";
+      }
+
+
+      function vidThreeHandler(e) {
+          theThirdVid.style.display="none";
+          theThirdVid.pause(); 
+          document.getElementById('narratives-intro-3').style.display="block";
+      }
+
+
+      function gotoVideoTwo(){
+        closeables = document.getElementsByClassName('closeable');
+        for(i=0; i<closeables.length; i++){
+          closeables[i].style.display="none";
+        }
+        theSecondVid.style.display="block";
+        theSecondVid.play(); 
+        theSecondVid.addEventListener('ended',vidTwoHandler,false);
+      }
+
+      function gotoVideoThree(){
+        closeables = document.getElementsByClassName('closeable');
+        for(i=0; i<closeables.length; i++){
+          closeables[i].style.display="none";
+        }
+        theThirdVid.style.display="block";
+        theThirdVid.play(); 
+        theThirdVid.addEventListener('ended',vidThreeHandler,false);
+      }      
+
+    </script>
+  </body>
+</html>
