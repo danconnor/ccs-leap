@@ -25,7 +25,7 @@
                 background-size: cover; 
         }
 
-        #bgvid, #bgvid2, #bgvid3, #bgvid4 { 
+        #bgvid { 
           display: none;
           background: url(assets/images/blank-intro.png) no-repeat;
         }
@@ -59,16 +59,24 @@
           padding: 100px;
         }
 
-        #dev { 
+        .sticky {
           position: absolute;
-          top: 20px;
-          right: 20px;
           background-color: #000;
           color: green;
           font-size: 16px;
           line-height: 100%;
           cursor: pointer;
           padding: 10px;
+        }
+
+        #dev { 
+          top: 20px;
+          right: 20px;
+        }
+
+        #dev2 { 
+          top: 20px;
+          left: 20px;
         }
 
         #hotspot1 {
@@ -139,7 +147,7 @@
       <source src="assets/video/intro_V2.mp4" type="video/mp4">
     </video>
 
-    <div id="narratives-intro" class="fullness">
+    <div id="narratives-intro" class="fullness closeable">
       <div class="introPane" id="pane1">
         <button type="button" onclick="gotoVideoTwo()" class="btn-primary leap-click leap-interactive" leap-attractor-x-padding="30" leap-attractor-y-padding="30" leap-click-delay="1000">Choice #1</button>
       </div>
@@ -159,39 +167,26 @@
       <button type="button" onclick="gotoVideoFour()" class="btn-primary leap-click leap-interactive" leap-attractor-x-padding="30" leap-attractor-y-padding="30" leap-click-delay="1000">Continue</button>
     </div>
 
-    <video playsinline poster="assets/images/blank-intro.png" id="bgvid2" class="fullness closeable">
-      <source src="assets/video/video_2.mp4" type="video/mp4">
-    </video>
+    <div class="sticky" id="dev" onclick="moveAlong()">>></div>
+    <div class="sticky" id="dev2" onclick="canWeStartAgain()">Start Again</div>
 
-    <video playsinline poster="assets/images/blank-intro.png" id="bgvid3" class="fullness closeable">
-      <source src="assets/video/video_3.mp4" type="video/mp4">
-    </video> 
-
-    <video playsinline poster="assets/images/blank-intro.png" id="bgvid4" class="fullness closeable">
-      <source src="assets/video/video_4.mp4" type="video/mp4">
-    </video> 
-
-    <div id="dev" onclick="moveAlong()"><p>>></p></div>
-    
     <script>
 
       var whatStageAreWeAt = 1;
 
       var moveAlong = function(){
+        whatStageAreWeAt++;
         if(whatStageAreWeAt==1){
-          whatStageAreWeAt++;
           vidHandler();
         }else if (whatStageAreWeAt==2){
-          whatStageAreWeAt++;
           vidTwoHandler();
         }else if (whatStageAreWeAt==3){
-          whatStageAreWeAt++;
           vidThreeHandler();
         }else if (whatStageAreWeAt==4){
-          whatStageAreWeAt++;
           vidFourHandler();
         }
       }
+
 
       LeapManager.init({
         interactiveSelector: "a",
@@ -209,68 +204,74 @@
       });
 
       var devThing = document.getElementById("dev");
-      var theIntroVid = document.getElementById('bgvid');
-      var theSecondVid = document.getElementById('bgvid2');
-      var theThirdVid = document.getElementById('bgvid3');
-      var theFourthVid = document.getElementById('bgvid4');
+      var theVideo = document.getElementById('bgvid');
 
       // init
-      theIntroVid.style.display="block";
-      theIntroVid.addEventListener('ended',vidHandler,false);
+      theVideo.style.display="block";
+      theVideo.addEventListener('ended',vidHandler,false);
 
       function vidHandler(e) {
-          theIntroVid.style.display="none";
-          theIntroVid.pause(); 
+          theVideo.style.display="none";
+          theVideo.pause(); 
           document.getElementById('narratives-intro').style.display="block";
       }
 
       function vidTwoHandler(e) {
-          theSecondVid.style.display="none";
-          theSecondVid.pause(); 
+          theVideo.style.display="none";
+          theVideo.pause(); 
           document.getElementById('narratives-intro-2').style.display="block";
       }
 
-
       function vidThreeHandler(e) {
-          theThirdVid.style.display="none";
-          theThirdVid.pause(); 
+          theVideo.style.display="none";
+          theVideo.pause(); 
           document.getElementById('narratives-intro-3').style.display="block";
       }
 
       function vidFourHandler(e) {
-          theFourthVid.style.display="none";
-          theFourthVid.pause(); 
+          theVideo.style.display="none";
+          theVideo.pause(); 
           document.getElementById('narratives-intro-4').style.display="block";
       }
 
-      function gotoVideoTwo(){
+      var closeAll = function(){
         closeables = document.getElementsByClassName('closeable');
         for(i=0; i<closeables.length; i++){
           closeables[i].style.display="none";
         }
-        theSecondVid.style.display="block";
-        theSecondVid.play(); 
-        theSecondVid.addEventListener('ended',vidTwoHandler,false);
+      }        
+
+      var canWeStartAgain = function(){
+        whatStageAreWeAt = 1;
+        closeAll();
+        theVideo.setAttribute('src', 'assets/video/intro_V2.mp4');
+        theVideo.style.display="block";
+        theVideo.play(); 
+        theVideo.addEventListener('ended',vidHandler,false);
+      }
+
+      function gotoVideoTwo(){
+        closeAll();
+        theVideo.setAttribute('src', 'assets/video/video_2.mp4');
+        theVideo.style.display="block";
+        theVideo.play(); 
+        theVideo.addEventListener('ended',vidTwoHandler,false);
       }
 
       function gotoVideoThree(){
-        closeables = document.getElementsByClassName('closeable');
-        for(i=0; i<closeables.length; i++){
-          closeables[i].style.display="none";
-        }
-        theThirdVid.style.display="block";
-        theThirdVid.play(); 
-        theThirdVid.addEventListener('ended',vidThreeHandler,false);
+        closeAll();
+        theVideo.setAttribute('src', 'assets/video/video_3.mp4');
+        theVideo.style.display="block";
+        theVideo.play(); 
+        theVideo.addEventListener('ended',vidThreeHandler,false);
       }   
 
       function gotoVideoFour(){
-        closeables = document.getElementsByClassName('closeable');
-        for(i=0; i<closeables.length; i++){
-          closeables[i].style.display="none";
-        }
-        theFourthVid.style.display="block";
-        theFourthVid.play(); 
-        theFourthVid.addEventListener('ended',vidFourHandler,false);
+        closeAll();
+        theVideo.setAttribute('src', 'assets/video/video_4.mp4');
+        theVideo.style.display="block";
+        theVideo.play(); 
+        theVideo.addEventListener('ended',vidFourHandler,false);
       }  
 
 
